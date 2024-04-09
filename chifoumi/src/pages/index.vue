@@ -1,48 +1,50 @@
 <template>
-  <v-container >
+  <v-container>
     <div class="text-center">
       <h1 class="text-h2 font-weight-bold">Chifoumi</h1>
-      <h4>Jouez un coup ! ;)</h4>
+      <h3><i>Choisissez un bouton</i></h3>
       <h1>{{ resultSentence }}</h1>
       <h3>{{ userScore }} - {{ botScore }}</h3>
     </div>
     <div class="py-4" />
 
     <v-row style="justify-content: center; align-items: center; gap: 20px;">
-      <v-btn class="m-8 p-4" variant="outlined" color="grey" @click="play(1)">
-        <h1>Pierre</h1>
+      <v-btn size="x-large" icon="mdi-hexagon" class="m-8 p-4" variant="outlined" color="grey" @click="play(1)">
       </v-btn>
-      <v-btn class="m-8 p-4" variant="outlined" color="green" @click="play(2)">
-        <h1>Feuille</h1>
+      <v-btn size="x-large" icon="mdi-leaf" class="m-8 p-4" variant="outlined" color="green" @click="play(2)">
+        <v-icon icon="mdi-leaf"></v-icon>
       </v-btn>
-      <v-btn class="m-8 p-4" variant="outlined" color="red" @click="play(3)">
-        <h1>Ciseau</h1>
+      <v-btn size="x-large" icon="mdi-content-cut" class="m-8 p-4" variant="outlined" color="primary" @click="play(3)">
       </v-btn>
     </v-row>
 
     <div class="text-center mt-8" style="align-items: center;">
       <v-row>
         <v-card width="200" class="mx-auto p-8 ma-4" elevation="10">
-          <h2> User : {{ userChoice === 1 ? 'Pierre' : userChoice === 2 ? 'Feuille' : userChoice === 3 ? 'Ciseau' : "" }}</h2>
+          <h2> Votre choix : {{ userChoice === 1 ? 'Pierre' : userChoice === 2 ? 'Feuille' : userChoice === 3 ? 'Ciseau' : "" }}</h2>
         </v-card>
-        <v-card width="200" class="mx-auto p-8 ma-4" elevation="10" >
-          <h2>Bot : {{ botChoice === 1 ? 'Pierre' : botChoice === 2 ? 'Feuille' : botChoice === 3 ? 'Ciseau' : ""}}</h2>
+        <v-card width="200" class="mx-auto p-8 ma-4" elevation="10">
+          <h2>Choix du Bot : {{ botChoice === 1 ? 'Pierre' : botChoice === 2 ? 'Feuille' : botChoice === 3 ? 'Ciseau' : "" }}</h2>
         </v-card>
       </v-row>
       <div class="text-center mt-8" style="align-items: center;">
-      <v-row>
-        <v-card>
-          <v-card-title>
-            <h1>Historique</h1>
-          </v-card-title>
-          <v-card-text>
-            <hr>
-            <h3 v-for="score in scores" :key="score">{{ score.user === 1 ? 'Pierre' : score.user === 2 ? 'Feuille' : score.user === 3 ? 'Ciseau' : "" }} vs {{ score.bot === 1 ? 'Pierre' : score.bot === 2 ? 'Feuille' : score.bot === 3 ? 'Ciseau' : "" }} : Vous avez {{ score.result }}</h3>
-          </v-card-text>
-        </v-card>
-      </v-row>
+        <v-row>
+          <v-card>
+            <v-card-title>
+              <h1>Historique des scores</h1>
+            </v-card-title>
+            <v-card-text>
+              <hr>
+              <div v-for="score in scores" :key="score" class="ma-4 align-start">
+                <h3 class="py-2">Vous : {{ score.user === 1 ? 'Pierre' : score.user === 2 ? 'Feuille' : score.user === 3 ? 'Ciseau' : "" }} - Bot : {{ score.bot === 1 ? 'Pierre' : score.bot === 2 ? 'Feuille' : score.bot === 3 ? 'Ciseau' : "" }}</h3>
+                <h4>Vous avez {{ score.result }}.</h4>
+                <h5>{{ score.userScore }} - {{ score.botScore }}</h5>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-row>
+      </div>
     </div>
-  </div>
   </v-container>
 </template>
 
@@ -109,13 +111,10 @@ export default {
           this.resetValues()
 
         }
-
       }
     },
     resetValues() {
-      console.log(this.userScore, this.botScore);
-      this.scores.push({user: this.userChoice, bot: this.botChoice, result: this.resultSentence})
-    
+      this.scores.push({ user: this.userChoice, bot: this.botChoice, result: this.resultSentence, userScore: this.userScore, botScore: this.botScore })
     },
     setbotChoice() {
       return Math.floor(Math.random() * (3 - 1 + 1)) + 1
